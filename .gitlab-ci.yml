@@ -31,25 +31,15 @@ build:
     - docker
   environment: production
 
-build:
-  stage: build
+test:
+  stage: test
   script:
-    - bundle exec rake release_checks
+    - bundle exec rake spec
   only:
-    - development
+    - production
   tags:
     - docker
-  environment: development
-
-build:
-  stage: build
-  script:
-    - bundle exec rake release_checks
-  only:
-    - test
-  tags:
-    - docker
-  environment: test
+  environment: production
 
 production:
   stage: deploy
