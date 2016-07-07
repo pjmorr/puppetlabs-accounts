@@ -30,7 +30,7 @@ before_script:
   - bundle install
 
 after_script:
-  - rm secrets
+  #- rm secrets
 
 stages:
   - build
@@ -83,11 +83,11 @@ production:
 notify:hipchat:
   stage: notify
   script:
-    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` succeded! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` succeded! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l OK -n false
   when: on_success
 
 notify:hipchat:
   stage: notify
   script:
-    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l CRITICAL -n true
   when: on_failure
