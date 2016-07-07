@@ -48,16 +48,6 @@ build:
     - docker
   environment: production
 
-test:
-  stage: test
-  script:
-    - 'bundle exec rake bundle:audit'
-  only:
-    - production
-  tags:
-    - docker
-  environment: production
-
 build:
   stage: build
   script:
@@ -68,50 +58,10 @@ build:
     - docker
   environment: development
 
-test:
-  stage: test
-  script:
-    - 'bundle exec rake bundle:audit'
-  only:
-    - development
-  tags:
-    - docker
-  environment: development
-
 build:
   stage: build
   script:
     - bundle exec rake release_checks
-  only:
-    - test
-  tags:
-    - docker
-  environment: test
-
-test:
-  stage: test
-  script:
-    - 'bundle exec rake bundle:audit'
-  only:
-    - test
-  tags:
-    - docker
-  environment: test
-
-test:
-  stage: deploy
-  script:
-    - pwd
-  only:
-    - test
-  tags:
-    - docker
-  environment: test
-
-notify:hipchat:
-  stage: notify
-  script:
-    - ./scripts/notify_hipchat.sh "build" "Build on \`$CI_BUILD_REF_NAME\` Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
   only:
     - test
   tags:
@@ -133,8 +83,11 @@ production:
 notify:hipchat:
   stage: notify
   script:
-    - ./scripts/notify_hipchat.sh "#builds" "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
-  when: always
-  only:
-    - master@puppet/uberops-hipnotify
-    - tags@puppet/uberops-hipnotify
+    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` succeded! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+  when: on_success
+
+notify:hipchat:
+  stage: notify
+  script:
+    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+  when: on_failure
