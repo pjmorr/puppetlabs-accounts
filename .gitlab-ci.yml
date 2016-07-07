@@ -1,0 +1,140 @@
+image: ruby:2.3
+
+services:
+
+variables:
+
+cache:
+  untracked: true
+
+before_script:
+  # Install ssh-agent if not already installed, it is required by Docker.
+  # (change apt-get to yum if you use a CentOS-based image)
+  - apt-get -qq update
+  - 'which ssh-agent || ( apt-get -qq install openssh-client -y )'
+
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+  # For Docker builds disable host key checking. Be aware that by adding that
+  # you are suspectible to man-in-the-middle attacks.
+  # WARNING: Use this only with the Docker executor, if you use it with shell
+  # you will overwrite your user's SSH config.
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - export DEBIAN_FRONTEND=noninteractive
+  - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - bundle install
+
+after_script:
+  - rm secrets
+
+stages:
+  - build
+  - test
+  - deploy
+  - notify
+
+build:
+  stage: build
+  script:
+    - bundle exec rake release_checks
+  only:
+    - production
+  tags:
+    - docker
+  environment: production
+
+test:
+  stage: test
+  script:
+    - 'bundle exec rake bundle:audit'
+  only:
+    - production
+  tags:
+    - docker
+  environment: production
+
+build:
+  stage: build
+  script:
+    - bundle exec rake release_checks
+  only:
+    - development
+  tags:
+    - docker
+  environment: development
+
+test:
+  stage: test
+  script:
+    - 'bundle exec rake bundle:audit'
+  only:
+    - development
+  tags:
+    - docker
+  environment: development
+
+build:
+  stage: build
+  script:
+    - bundle exec rake release_checks
+  only:
+    - test
+  tags:
+    - docker
+  environment: test
+
+test:
+  stage: test
+  script:
+    - 'bundle exec rake bundle:audit'
+  only:
+    - test
+  tags:
+    - docker
+  environment: test
+
+test:
+  stage: deploy
+  script:
+    - pwd
+  only:
+    - test
+  tags:
+    - docker
+  environment: test
+
+notify:hipchat:
+  stage: notify
+  script:
+    - ./scripts/notify_hipchat.sh "build" "Build on \`$CI_BUILD_REF_NAME\` Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+  only:
+    - test
+  tags:
+    - docker
+  environment: test
+
+production:
+  stage: deploy
+  script:
+    - "curl -X POST -F token=$TOKEN -F ref=REF_NAME https://gitlab.ubermonitoring.com/api/v3/projects/84/trigger/builds"
+  only:
+    - production
+  tags:
+    - docker
+  environment: production
+
+# Notify hipchat in the end
+
+notify:hipchat:
+  stage: notify
+  script:
+    - ./scripts/notify_hipchat.sh "#builds" "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+  when: always
+  only:
+    - master@puppet/uberops-hipnotify
+    - tags@puppet/uberops-hipnotify
