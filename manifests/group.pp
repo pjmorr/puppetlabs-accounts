@@ -20,7 +20,7 @@ define accounts::group(
 }
 
 # temporary test
-file_line { 'sudonopw_rules':
-  path => '/etc/sudoers',
-  line => '%sudonopw ALL=NOPASSWD: ALL'
-}
+#file_line { 'sudonopw_rules':
+#  path => '/etc/sudoers',
+#  line => '%sudonopw ALL=NOPASSWD: ALL'
+#}
