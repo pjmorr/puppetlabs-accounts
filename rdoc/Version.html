@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class Version - retrospec-samba </title>
+
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">String
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-ee-3F">#ee?</a>
+    
+    <li ><a href="#method-i-major">#major</a>
+    
+    <li ><a href="#method-i-milestone_name">#milestone_name</a>
+    
+    <li ><a href="#method-i-minor">#minor</a>
+    
+    <li ><a href="#method-i-next_patch">#next_patch</a>
+    
+    <li ><a href="#method-i-patch">#patch</a>
+    
+    <li ><a href="#method-i-patch-3F">#patch?</a>
+    
+    <li ><a href="#method-i-previous_patch">#previous_patch</a>
+    
+    <li ><a href="#method-i-previous_tag">#previous_tag</a>
+    
+    <li ><a href="#method-i-rc">#rc</a>
+    
+    <li ><a href="#method-i-rc-3F">#rc?</a>
+    
+    <li ><a href="#method-i-release-3F">#release?</a>
+    
+    <li ><a href="#method-i-stable_branch">#stable_branch</a>
+    
+    <li ><a href="#method-i-tag">#tag</a>
+    
+    <li ><a href="#method-i-to_minor">#to_minor</a>
+    
+    <li ><a href="#method-i-to_omnibus">#to_omnibus</a>
+    
+    <li ><a href="#method-i-to_patch">#to_patch</a>
+    
+    <li ><a href="#method-i-to_rc">#to_rc</a>
+    
+    <li ><a href="#method-i-valid-3F">#valid?</a>
+    
+    <li ><a href="#method-i-version-3F">#version?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Version">
+  <h1 id="class-Version" class="class">
+    class Version
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="RELEASE_REGEX">RELEASE_REGEX
+        
+        <dd>
+        
+      
+        <dt id="VERSION_REGEX">VERSION_REGEX
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-ee-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ee?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ee-3F-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ee?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">end_with?</span>(<span class="ruby-string">&#39;-ee&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-major" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">major</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="major-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">major</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">version?</span>
+
+  <span class="ruby-ivar">@major</span> <span class="ruby-operator">||=</span> <span class="ruby-regexp">/\A(\d+)\./</span>.<span class="ruby-identifier">match</span>(<span class="ruby-keyword">self</span>)[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-milestone_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">milestone_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="milestone_name-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">milestone_name</span>
+  <span class="ruby-identifier">to_minor</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-minor" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">minor</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="minor-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">minor</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">version?</span>
+
+  <span class="ruby-ivar">@minor</span> <span class="ruby-operator">||=</span> <span class="ruby-regexp">/\A\d+\.(\d+)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-keyword">self</span>)[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-next_patch" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">next_patch</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="next_patch-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">next_patch</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">release?</span>
+
+  <span class="ruby-identifier">captures</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">RELEASE_REGEX</span>).<span class="ruby-identifier">captures</span>
+
+  <span class="ruby-node">&quot;#{captures[0]}#{patch + 1}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-patch" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">patch</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="patch-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">patch</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">release?</span>
+
+  <span class="ruby-ivar">@patch</span> <span class="ruby-operator">||=</span> <span class="ruby-regexp">/\.(\d+)$/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-keyword">self</span>)[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-patch-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">patch?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="patch-3F-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">patch?</span>
+  <span class="ruby-identifier">patch</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-previous_patch" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">previous_patch</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="previous_patch-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">previous_patch</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">patch?</span>
+
+  <span class="ruby-identifier">captures</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">RELEASE_REGEX</span>).<span class="ruby-identifier">captures</span>
+
+  <span class="ruby-node">&quot;#{captures[0]}#{patch - 1}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-previous_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">previous_tag</span><span
+            class="method-args">(ee: false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="previous_tag-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">previous_tag</span>(<span class="ruby-identifier">ee</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">patch?</span>
+
+  <span class="ruby-identifier">tag_for</span>(<span class="ruby-identifier">previous_patch</span>, <span class="ruby-identifier">ee</span><span class="ruby-operator">:</span> <span class="ruby-identifier">ee</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-rc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rc</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="rc-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rc</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/-(rc\d+)(-ee)?\z/</span>).<span class="ruby-identifier">captures</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">rc?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-rc-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rc?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="rc-3F-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rc?</span>
+  <span class="ruby-keyword">self</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A\d+\.\d+\.\d+-rc\d+(-ee)?\z/</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-release-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">release?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="release-3F-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">release?</span>
+  <span class="ruby-keyword">self</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">RELEASE_REGEX</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-stable_branch" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stable_branch</span><span
+            class="method-args">(ee: false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="stable_branch-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stable_branch</span>(<span class="ruby-identifier">ee</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">to_minor</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;.&#39;</span>, <span class="ruby-string">&#39;-&#39;</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ee</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">ee?</span>
+    <span class="ruby-string">&#39;-stable-ee&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-string">&#39;-stable&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag</span><span
+            class="method-args">(ee: false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tag-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag</span>(<span class="ruby-identifier">ee</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">tag_for</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">ee</span><span class="ruby-operator">:</span> <span class="ruby-identifier">ee</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_minor" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_minor</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_minor-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_minor</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\A\d+\.\d+/</span>).<span class="ruby-identifier">to_s</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_omnibus" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_omnibus</span><span
+            class="method-args">(ee: false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_omnibus-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_omnibus</span>(<span class="ruby-identifier">ee</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">str</span> = <span class="ruby-node">&quot;#{to_patch}+&quot;</span>
+  <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{rc}.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">rc?</span>
+  <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-identifier">ee</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;ee&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;ce&#39;</span>)
+  <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;.0&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_patch" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_patch</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_patch-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_patch</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\A\d+\.\d+\.\d+/</span>).<span class="ruby-identifier">to_s</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_rc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_rc</span><span
+            class="method-args">(number = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_rc-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_rc</span>(<span class="ruby-identifier">number</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-node">&quot;#{to_patch}-rc#{number}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid-3F-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid?</span>
+  <span class="ruby-identifier">release?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">rc?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-version-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">version?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="version-3F-source">
+            <pre><span class="ruby-comment"># File lib/version.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">version?</span>
+  <span class="ruby-keyword">self</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">VERSION_REGEX</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

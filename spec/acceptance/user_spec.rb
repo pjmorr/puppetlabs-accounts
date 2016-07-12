@@ -72,7 +72,7 @@ describe 'accounts::user define', :unless => UNSUPPORTED_PLATFORMS.include?(fact
         EOS
         apply_manifest(pp, :catch_failures => true)
       end
-      it { 
+      it {
         case fact('osfamily')
         when 'Debian'
           should have_login_shell '/usr/sbin/nologin'

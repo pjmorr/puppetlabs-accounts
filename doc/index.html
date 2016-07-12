@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!file.README.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="puppet_manifest_list_link"
+        href="puppet_manifest_list.html">
+      Puppet Manifest List
+    </a>
+  
+    <a class="full_list_link" id="puppet_plugin_list_link"
+        href="puppet_plugin_list.html">
+      Puppet Plugin List
+    </a>
+  
+    <a class="full_list_link" id="puppet_type_list_link"
+        href="puppet_type_list.html">
+      Puppet Type List
+    </a>
+  
+    <a class="full_list_link" id="puppet_provider_list_link"
+        href="puppet_provider_list.html">
+      Puppet Provider List
+    </a>
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1 id="accounts">accounts</h1>
+
+<h4 id="table-of-contents">Table of Contents</h4>
+<ol>
+  <li><a href="#description">Description</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with accounts</a></li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a>
+    <ul>
+      <li><a href="#declare-user-accounts">Declare user accounts</a></li>
+      <li><a href="#customize-the-home-directory">Customize the home directory</a></li>
+      <li><a href="#lock-accounts">Lock accounts</a></li>
+      <li><a href="#manage-ssh-keys">Manage SSH keys</a></li>
+    </ul>
+  </li>
+  <li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a></li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<h2 id="description">Description</h2>
+
+<p>The accounts module manages resources related to login and service accounts. This module replaces Puppet Enterprise’s built-in pe_accounts module, which is no longer included in PE 2015.3 and later versions.</p>
+
+<p>This module works on many UNIX/Linux operating systems. It does not support configuring accounts on Microsoft Windows platforms.</p>
+
+<h2 id="setup">Setup</h2>
+
+<h3 id="beginning-with-accounts">Beginning with accounts</h3>
+
+<p>Declare the <code>accounts</code> class in a Puppet-managed node’s manifest:</p>
+
+<div class="language-puppet highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre class="code ruby"><code class="ruby">&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;node default {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  accounts::user { &#39;dan&#39;: }
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  accounts::user { &#39;morgan&#39;: }
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;}
+</code></pre></div>
+</div>
+</div>
+
+<p>The above example creates accounts, home directories, and groups for Dan and Morgan.</p>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="declare-user-accounts">Declare user accounts</h3>
+
+<div class="language-puppet highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre class="code ruby"><code class="ruby">&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;accounts::user { &#39;bob&#39;:
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  uid      =&gt; 4001,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  gid      =&gt; 4001,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;  shell    =&gt; &#39;/bin/bash&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  password =&gt; &#39;!!&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  sshkeys  =&gt; &quot;ssh-rsa AAAA...&quot;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  locked   =&gt; false,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;}
+</code></pre></div>
+</div>
+</div>
+
+<h3 id="customize-the-home-directory">Customize the home directory</h3>
+
+<p>A simple bashrc and bash_profile rc file is managed by Puppet for each account. These rc files add some simple aliases, update the prompt, add ~/bin to the path, and source the following files (which are not managed by this module) in the following order:</p>
+
+<ol>
+  <li><code>/etc/bashrc</code></li>
+  <li><code>/etc/bashrc.puppet</code></li>
+  <li><code>~/.bashrc.custom</code></li>
+</ol>
+
+<p>Account holders can customize their shells by managing their bashrc.custom files. In addition, the system administrator can make profile changes that affect all accounts with a bash shell by managing the ‘/etc/bashrc.puppet’ file.</p>
+
+<h3 id="lock-accounts">Lock accounts</h3>
+
+<p>Lock accounts by setting the <code>locked</code> parameter of an account to true.</p>
+
+<p>For example:</p>
+
+<div class="language-puppet highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre class="code ruby"><code class="ruby">&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;accounts::user { &#39;villain&#39;:
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  comment =&gt; &#39;Bad Person&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  locked  =&gt; true
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;}
+</code></pre></div>
+</div>
+</div>
+
+<p>The accounts module sets the account to an invalid shell appropriate for the system Puppet is managing and displays the following message if a user tries to access the account:</p>
+
+<pre class="code ruby"><code class="ruby">$ ssh villain@centos56
+This account is currently not available.
+Connection to 172.16.214.129 closed.
+</code></pre>
+
+<h3 id="manage-ssh-keys">Manage SSH keys</h3>
+
+<p>Manage SSH keys with the <code>sshkeys</code> attribute of the <code>accounts::user</code> defined type. This parameter accepts an array of public key contents as strings.</p>
+
+<p>Example:</p>
+
+<div class="language-puppet highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre class="code ruby"><code class="ruby">&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;accounts::user { &#39;jeff&#39;:
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  comment =&gt; &#39;Jeff McCune&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  groups  =&gt; [
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    &#39;admin&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    &#39;sudonopw&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  ],
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  uid     =&gt; &#39;1112&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;  gid     =&gt; &#39;1112&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;  sshkeys =&gt; [
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &#39;ssh-rsa AAAAB3Nza...== jeff@puppetlabs.com&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;    &#39;ssh-dss AAAAB3Nza...== jeff@metamachine.net&#39;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;  ],
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;}
+</code></pre></div>
+</div>
+</div>
+
+<h2 id="reference">Reference</h2>
+
+<h3 id="defined-type-accountsuser">Defined type: <code>accounts::user</code></h3>
+
+<p>This resource manages the user, group, .vim/, .ssh/, .bash_profile, .bashrc, homedir, .ssh/authorized_keys files, and directories.</p>
+
+<h4 id="bashrccontent"><code>bashrc_content</code></h4>
+
+<p>The content to place in the user’s ~/.bashrc file. Default: undef.</p>
+
+<h4 id="bashprofilecontent"><code>bash_profile_content</code></h4>
+
+<p>The content to place in the user’s ~/.bash_profile file. Default: undef.</p>
+
+<h4 id="comment"><code>comment</code></h4>
+
+<p>A comment describing or regarding the user. Accepts a string. Default: ‘$name’.</p>
+
+<h4 id="ensure"><code>ensure</code></h4>
+
+<p>Specifies whether the user, its primary group, homedir, and ssh keys should exist. Valid values are ‘present’ and ‘absent’. Note that when a user is created, a group with the same name as the user is also created. Default: ‘present’.</p>
+
+<h4 id="gid"><code>gid</code></h4>
+
+<p>Specifies the gid of the user’s primary group. Must be specified numerically. Default: undef.</p>
+
+<h4 id="groups"><code>groups</code></h4>
+
+<p>Specifies the user’s group memberships. Valid values: an array. Default: an empty array.</p>
+
+<h4 id="home"><code>home</code></h4>
+
+<p>Specifies the path to the user’s home directory. 
+Default: 
+* Linux, non-root user: ‘/home/$name’ 
+* Linux, root user: ‘/root’
+* Solaris, non-root user: ‘/export/home/$name’ 
+* Solaris, root user: ‘/’</p>
+
+<h4 id="homemode"><code>home_mode</code></h4>
+
+<p>Manages the user’s home directory permission mode. Valid values are in <a href="https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode">octal notation</a>, specified as a string. Defaults to <code>0700</code>, which gives the owner full read, write, and execute permissions, while group and other have no permissions.</p>
+
+<h4 id="locked"><code>locked</code></h4>
+
+<p>Specifies whether the account should be locked and the user prevented from logging in. Set to true for users whose login privileges have been revoked. Valid values: true, false. Default: false.</p>
+
+<h4 id="managehome"><code>managehome</code></h4>
+
+<p>Specifies whether the user’s home directory should be managed by puppet. In addition to the usual <a href="https://docs.puppetlabs.com/references/latest/type.html#user-attribute-managehome">user resource managehome</a> qualities, this attribute also purges the user’s homedir if <code>ensure</code> is set to ‘absent’ and <code>managehome</code> is set to true. Default: true.</p>
+
+<h4 id="membership"><code>membership</code></h4>
+
+<p>Establishes whether specified groups should be considered the complete list (inclusive) or the minimum list (minimum) of groups to which the user belongs. Valid values: ‘inclusive’, ‘minimum’. Default: ‘minimum’.</p>
+
+<h4 id="password"><code>password</code></h4>
+
+<p>The user’s password, in whatever encrypted format the local machine requires. Default: ‘!!’, which prevents the user from logging in with a password.</p>
+
+<h4 id="purgesshkeys"><code>purge_sshkeys</code></h4>
+
+<p>Whether keys not included in <code>sshkeys</code> should be removed from the user. If <code>purge_sshkeys</code> is true and <code>sshkeys</code> is an empty array, all SSH keys will be removed from the user. Valid values: true, false. Default: false.</p>
+
+<h4 id="shell"><code>shell</code></h4>
+
+<p>Manages the user shell. Default: ‘/bin/bash’.</p>
+
+<h4 id="sshkeys"><code>sshkeys</code></h4>
+
+<p>An array of SSH public keys associated with the user. These should be complete public key strings that include the type and name of the key, exactly as the key would appear in its id_rsa.pub or id_dsa.pub file. Must be an array. Default: an empty array.</p>
+
+<h4 id="uid"><code>uid</code></h4>
+
+<p>Specifies the user’s uid number. Must be specified numerically. Default: undef.</p>
+
+<h2 id="limitations">Limitations</h2>
+
+<p>This module works with Puppet Enterprise 2015.3 and later.</p>
+
+<h3 id="changes-from-peaccounts">Changes from pe_accounts</h3>
+
+<p>The accounts module is designed to take the place of the pe_accounts module that shipped with PE versions 2015.2 and earlier. Some of the changes include the removal of the base class, improving the validation, and allowing more flexibility regarding which files should or should not be managed in a user’s home directory.</p>
+
+<p>For example, the .bashrc and .bash_profile files are not managed by default but allow custom content to be passed in using the <code>bashrc_content</code> and <code>bash_profile_content</code> parameters. The content for these two files as managed by pe_accounts can continue to be used by passing <code>bashrc_content =&gt; file('accounts/shell/bashrc')</code> and <code>bash_profile_content =&gt; file('accounts/shell/bash_profile')</code> to the <code>accounts::user</code> defined type.</p>
+
+<h2 id="development">Development</h2>
+
+<p>If you run into an issue with this module, or if you would like to request a feature, please <a href="https://tickets.puppetlabs.com/browse/MODULES/">file a ticket</a>.</p>
+
+<p>If you have problems getting this module up and running, please <a href="http://puppetlabs.com/services/customer-support">contact Support</a>.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Thu Jul 14 09:34:16 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.1.9).
+</div>
+
+  </body>
+</html>

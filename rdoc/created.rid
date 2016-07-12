@@ -1,0 +1,17 @@
+Thu, 14 Jul 2016 09:31:37 -0500
+README.markdown	Thu, 14 Jan 2016 09:44:57 -0600
+lib/base_issue.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/gitlab_client.rb	Thu, 14 Jul 2016 09:21:20 -0500
+lib/monthly_issue.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/omnibus_gitlab_version.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/patch_issue.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/regression_issue.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/release.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/release/base_release.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/release/gitlab_ce_release.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/release/gitlab_ee_release.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/release/omnibus_gitlab_release.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/remotes.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/repository.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/sync.rb	Thu, 14 Jul 2016 09:09:31 -0500
+lib/version.rb	Thu, 14 Jul 2016 09:09:31 -0500

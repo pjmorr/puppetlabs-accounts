@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>README.markdown - retrospec-samba </title>
+
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#label-accounts">accounts</a>
+    <li><a href="#label-Table+of+Contents">Table of Contents</a>
+    <li><a href="#label-Description">Description</a>
+    <li><a href="#label-Setup">Setup</a>
+    <li><a href="#label-Beginning+with+accounts">Beginning with accounts</a>
+    <li><a href="#label-Usage">Usage</a>
+    <li><a href="#label-Declare+user+accounts">Declare user accounts</a>
+    <li><a href="#label-Customize+the+home+directory">Customize the home directory</a>
+    <li><a href="#label-Lock+accounts">Lock accounts</a>
+    <li><a href="#label-Manage+SSH+keys">Manage SSH keys</a>
+    <li><a href="#label-Reference">Reference</a>
+    <li><a href="#label-Defined+type%3A+accounts%3A%3Auser">Defined type: <code>accounts::user</code></a>
+    <li><a href="#label-bashrc_content"><code>bashrc_content</code></a>
+    <li><a href="#label-bash_profile_content"><code>bash_profile_content</code></a>
+    <li><a href="#label-comment"><code>comment</code></a>
+    <li><a href="#label-ensure"><code>ensure</code></a>
+    <li><a href="#label-gid"><code>gid</code></a>
+    <li><a href="#label-groups"><code>groups</code></a>
+    <li><a href="#label-home"><code>home</code></a>
+    <li><a href="#label-home_mode"><code>home_mode</code></a>
+    <li><a href="#label-locked"><code>locked</code></a>
+    <li><a href="#label-managehome"><code>managehome</code></a>
+    <li><a href="#label-membership"><code>membership</code></a>
+    <li><a href="#label-password"><code>password</code></a>
+    <li><a href="#label-purge_sshkeys"><code>purge_sshkeys</code></a>
+    <li><a href="#label-shell"><code>shell</code></a>
+    <li><a href="#label-sshkeys"><code>sshkeys</code></a>
+    <li><a href="#label-uid"><code>uid</code></a>
+    <li><a href="#label-Limitations">Limitations</a>
+    <li><a href="#label-Changes+from+pe_accounts">Changes from pe_accounts</a>
+    <li><a href="#label-Development">Development</a>
+  </ul>
+</div>
+
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./README_markdown.html">README.markdown</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page README.markdown">
+
+<h1 id="label-accounts">accounts<span><a href="#label-accounts">&para;</a> <a href="#documentation">&uarr;</a></span></h1>
+
+<h4 id="label-Table+of+Contents">Table of Contents<span><a href="#label-Table+of+Contents">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+<ol><li>
+<p><a href="#description">Description</a></p>
+</li><li>
+<p><a href="#setup">Setup - The basics of getting started with accounts</a></p>
+</li><li>
+<p><a href="#usage">Usage - Configuration options and additional
+functionality</a>  * <a href="#declare-user-accounts">Declare user
+accounts</a>  * <a href="#customize-the-home-directory">Customize the home
+directory</a>  * <a href="#lock-accounts">Lock accounts</a>  * <a
+href="#manage-ssh-keys">Manage SSH keys</a></p>
+</li><li>
+<p><a href="#reference">Reference - An under-the-hood peek at what the module
+is doing and how</a></p>
+</li><li>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
+</li><li>
+<p><a href="#development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
+
+<h2 id="label-Description">Description<span><a href="#label-Description">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>The accounts module manages resources related to login and service
+accounts. This module replaces Puppet Enterprise&#39;s built-in pe_accounts
+module, which is no longer included in PE 2015.3 and later versions.</p>
+
+<p>This module works on many UNIX/Linux operating systems. It does not support
+configuring accounts on Microsoft Windows platforms.</p>
+
+<h2 id="label-Setup">Setup<span><a href="#label-Setup">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<h3 id="label-Beginning+with+accounts">Beginning with accounts<span><a href="#label-Beginning+with+accounts">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>Declare the <code>accounts</code> class in a Puppet-managed node&#39;s
+manifest:</p>
+
+<p>~~~puppet node default {  accounts::user { &#39;dan&#39;: }  accounts::user
+{ &#39;morgan&#39;: } } ~~~</p>
+
+<p>The above example creates accounts, home directories, and groups for Dan
+and Morgan.</p>
+
+<h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<h3 id="label-Declare+user+accounts">Declare user accounts<span><a href="#label-Declare+user+accounts">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>~~~puppet accounts::user { &#39;bob&#39;:  uid =&gt; 4001,  gid =&gt; 4001,
+shell =&gt; &#39;/bin/bash&#39;,  password =&gt; &#39;!!&#39;,  sshkeys
+=&gt; “ssh-rsa AAAA…”,  locked =&gt; false, } ~~~</p>
+
+<h3 id="label-Customize+the+home+directory">Customize the home directory<span><a href="#label-Customize+the+home+directory">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>A simple bashrc and bash_profile rc file is managed by Puppet for each
+account. These rc files add some simple aliases, update the prompt, add
+~/bin to the path, and source the following files (which are not managed by
+this module) in the following order:</p>
+<ol><li>
+<p><code>/etc/bashrc</code></p>
+</li><li>
+<p><code>/etc/bashrc.puppet</code></p>
+</li><li>
+<p><code>~/.bashrc.custom</code></p>
+</li></ol>
+
+<p>Account holders can customize their shells by managing their bashrc.custom
+files. In addition, the system administrator can make profile changes that
+affect all accounts with a bash shell by managing the
+&#39;/etc/bashrc.puppet&#39; file.</p>
+
+<h3 id="label-Lock+accounts">Lock accounts<span><a href="#label-Lock+accounts">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>Lock accounts by setting the <code>locked</code> parameter of an account to
+true.</p>
+
+<p>For example:</p>
+
+<p>~~~puppet accounts::user { &#39;villain&#39;:  comment =&gt; &#39;Bad
+Person&#39;,  locked =&gt; true } ~~~</p>
+
+<p>The accounts module sets the account to an invalid shell appropriate for
+the system Puppet is managing and displays the following message if a user
+tries to access the account:</p>
+
+<p>~~~ $ ssh villain@centos56 This account is currently not available.
+Connection to 172.16.214.129 closed. ~~~</p>
+
+<h3 id="label-Manage+SSH+keys">Manage SSH keys<span><a href="#label-Manage+SSH+keys">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>Manage SSH keys with the <code>sshkeys</code> attribute of the
+<code>accounts::user</code> defined type. This parameter accepts an array
+of public key contents as strings.</p>
+
+<p>Example:</p>
+
+<p>~~~puppet accounts::user { &#39;jeff&#39;:  comment =&gt; &#39;Jeff
+McCune&#39;,  groups =&gt; [ &#39;admin&#39;, &#39;sudonopw&#39;, ],  uid
+=&gt; &#39;1112&#39;,  gid =&gt; &#39;1112&#39;,  sshkeys =&gt; [
+&#39;ssh-rsa AAAAB3Nza…== jeff@puppetlabs.com&#39;, &#39;ssh-dss
+AAAAB3Nza…== jeff@metamachine.net&#39;, ], } ~~~</p>
+
+<h2 id="label-Reference">Reference<span><a href="#label-Reference">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<h3 id="label-Defined+type%3A+accounts%3A%3Auser">Defined type: <code>accounts::user</code><span><a href="#label-Defined+type%3A+accounts%3A%3Auser">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>This resource manages the user, group, .vim/, .ssh/, .bash_profile,
+.bashrc, homedir, .ssh/authorized_keys files, and directories.</p>
+
+<h4 id="label-bashrc_content"><code>bashrc_content</code><span><a href="#label-bashrc_content">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>The content to place in the user&#39;s ~/.bashrc file. Default: undef.</p>
+
+<h4 id="label-bash_profile_content"><code>bash_profile_content</code><span><a href="#label-bash_profile_content">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>The content to place in the user&#39;s ~/.bash_profile file. Default:
+undef.</p>
+
+<h4 id="label-comment"><code>comment</code><span><a href="#label-comment">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>A comment describing or regarding the user. Accepts a string. Default:
+&#39;$name&#39;.</p>
+
+<h4 id="label-ensure"><code>ensure</code><span><a href="#label-ensure">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies whether the user, its primary group, homedir, and ssh keys should
+exist. Valid values are &#39;present&#39; and &#39;absent&#39;. Note that
+when a user is created, a group with the same name as the user is also
+created. Default: &#39;present&#39;.</p>
+
+<h4 id="label-gid"><code>gid</code><span><a href="#label-gid">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies the gid of the user&#39;s primary group. Must be specified
+numerically. Default: undef.</p>
+
+<h4 id="label-groups"><code>groups</code><span><a href="#label-groups">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies the user&#39;s group memberships. Valid values: an array.
+Default: an empty array.</p>
+
+<h4 id="label-home"><code>home</code><span><a href="#label-home">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies the path to the user&#39;s home directory. Default: * Linux,
+non-root user: &#39;/home/$name&#39; * Linux, root user: &#39;/root&#39; *
+Solaris, non-root user: &#39;/export/home/$name&#39; * Solaris, root user:
+&#39;/&#39;</p>
+
+<h4 id="label-home_mode"><code>home_mode</code><span><a href="#label-home_mode">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Manages the user&#39;s home directory permission mode. Valid values are in
+<a
+href="https://docs.puppetlabs.com/references/latest/type.html#file-attribute-mode">octal
+notation</a>, specified as a string. Defaults to <code>0700</code>, which
+gives the owner full read, write, and execute permissions, while group and
+other have no permissions.</p>
+
+<h4 id="label-locked"><code>locked</code><span><a href="#label-locked">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies whether the account should be locked and the user prevented from
+logging in. Set to true for users whose login privileges have been revoked.
+Valid values: true, false. Default: false.</p>
+
+<h4 id="label-managehome"><code>managehome</code><span><a href="#label-managehome">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies whether the user&#39;s home directory should be managed by
+puppet. In addition to the usual <a
+href="https://docs.puppetlabs.com/references/latest/type.html#user-attribute-managehome">user
+resource managehome</a> qualities, this attribute also purges the
+user&#39;s homedir if <code>ensure</code> is set to &#39;absent&#39; and
+<code>managehome</code> is set to true. Default: true.</p>
+
+<h4 id="label-membership"><code>membership</code><span><a href="#label-membership">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Establishes whether specified groups should be considered the complete list
+(inclusive) or the minimum list (minimum) of groups to which the user
+belongs. Valid values: &#39;inclusive&#39;, &#39;minimum&#39;. Default:
+&#39;minimum&#39;.</p>
+
+<h4 id="label-password"><code>password</code><span><a href="#label-password">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>The user&#39;s password, in whatever encrypted format the local machine
+requires. Default: &#39;!!&#39;, which prevents the user from logging in
+with a password.</p>
+
+<h4 id="label-purge_sshkeys"><code>purge_sshkeys</code><span><a href="#label-purge_sshkeys">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Whether keys not included in <code>sshkeys</code> should be removed from
+the user. If <code>purge_sshkeys</code> is true and <code>sshkeys</code> is
+an empty array, all SSH keys will be removed from the user. Valid values:
+true, false. Default: false.</p>
+
+<h4 id="label-shell"><code>shell</code><span><a href="#label-shell">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Manages the user shell. Default: &#39;/bin/bash&#39;.</p>
+
+<h4 id="label-sshkeys"><code>sshkeys</code><span><a href="#label-sshkeys">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>An array of SSH public keys associated with the user. These should be
+complete public key strings that include the type and name of the key,
+exactly as the key would appear in its id_rsa.pub or id_dsa.pub file. Must
+be an array. Default: an empty array.</p>
+
+<h4 id="label-uid"><code>uid</code><span><a href="#label-uid">&para;</a> <a href="#documentation">&uarr;</a></span></h4>
+
+<p>Specifies the user&#39;s uid number. Must be specified numerically.
+Default: undef.</p>
+
+<h2 id="label-Limitations">Limitations<span><a href="#label-Limitations">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>This module works with Puppet Enterprise 2015.3 and later.</p>
+
+<h3 id="label-Changes+from+pe_accounts">Changes from pe_accounts<span><a href="#label-Changes+from+pe_accounts">&para;</a> <a href="#documentation">&uarr;</a></span></h3>
+
+<p>The accounts module is designed to take the place of the pe_accounts module
+that shipped with PE versions 2015.2 and earlier. Some of the changes
+include the removal of the base class, improving the validation, and
+allowing more flexibility regarding which files should or should not be
+managed in a user&#39;s home directory.</p>
+
+<p>For example, the .bashrc and .bash_profile files are not managed by default
+but allow custom content to be passed in using the
+<code>bashrc_content</code> and <code>bash_profile_content</code>
+parameters. The content for these two files as managed by pe_accounts can
+continue to be used by passing <code>bashrc_content =&gt;
+file(&#39;accounts/shell/bashrc&#39;)</code> and <code>bash_profile_content
+=&gt; file(&#39;accounts/shell/bash_profile&#39;)</code> to the
+<code>accounts::user</code> defined type.</p>
+
+<h2 id="label-Development">Development<span><a href="#label-Development">&para;</a> <a href="#documentation">&uarr;</a></span></h2>
+
+<p>If you run into an issue with this module, or if you would like to request
+a feature, please <a
+href="https://tickets.puppetlabs.com/browse/MODULES/">file a ticket</a>.</p>
+
+<p>If you have problems getting this module up and running, please <a
+href="http://puppetlabs.com/services/customer-support">contact Support</a>.</p>
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
