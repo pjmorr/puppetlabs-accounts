@@ -4,6 +4,8 @@ describe '::accounts::user' do
   let(:title) { "dan" }
   let(:params) { {} }
   let(:facts) { {} }
+  let(:contain_file_line_sudo_rules) { contain_file_line('sudo_rules') }
+  let(:contain_file_line_sudonopw_rules) { contain_file_line('sudonopw_rules') }
 
   describe 'expected defaults' do
     it { is_expected.to contain_user('dan').with({'shell'      => '/bin/bash'}) }
@@ -41,21 +43,21 @@ describe '::accounts::user' do
 
   describe 'when setting user parameters' do
     before do
-      params['ensure']     = 'present'
-      params['shell']      = '/bin/csh'
-      params['comment']    = 'comment'
-      params['home']       = '/var/home/dan'
-      params['home_mode']  = '0755'
-      params['uid']        = '123'
-      params['gid']        = '456'
-      params['groups']     = ['admin']
-      params['membership'] = 'inclusive'
-      params['password']   = 'foo'
-      params['sshkeys']    = ['1 2 3', '2 3 4']
+      params['ensure']         = 'present'
+      params['shell']          = '/bin/zsh'
+      params['comment']        = 'comment'
+      params['home']           = '/var/home/dan'
+      params['home_mode']      = '0755'
+      params['uid']            = '123'
+      params['gid']            = '456'
+      params['groups']         = ['admin']
+      params['membership']     = 'inclusive'
+      params['password']       = 'foo'
+      params['sshkeys']        = ['1 2 3', '2 3 4']
     end
 
     it { is_expected.to contain_user('dan').with({'ensure' => 'present'}) }
-    it { is_expected.to contain_user('dan').with({'shell' => '/bin/csh'}) }
+    it { is_expected.to contain_user('dan').with({'shell' => '/bin/zsh'}) }
     it { is_expected.to contain_user('dan').with({'comment' => 'comment'}) }
     it { is_expected.to contain_user('dan').with({'home' => '/var/home/dan'}) }
     it { is_expected.to contain_user('dan').with({'uid' => '123'}) }
@@ -65,11 +67,36 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with({'password' => 'foo'}) }
     it { is_expected.to contain_group('dan').with({'ensure' => 'present'}) }
     it { is_expected.to contain_group('dan').with({'gid' => '456'}) }
-    #it { is_expected.to contain_group('dan').that_comes_before('User[dan]') }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'user' => title}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'mode' => '0755'}) }
     it { is_expected.to contain_accounts__home_dir('/var/home/dan').with({'sshkeys' => ['1 2 3', '2 3 4']}) }
     it { is_expected.to contain_file('/var/home/dan/.ssh') }
+
+    describe "when using default class parameters" do
+      it { is_expected.not_to contain_file_line_sudo_rules }
+      it { is_expected.not_to contain_file_line_sudonopw_rules }
+
+    describe "when using default class parameters" do
+      it { is_expected.not_to contain_file_line_sudo_rules }
+      it { is_expected.not_to contain_file_line_sudonopw_rules }
+    end
+
+    describe "when manage_sudoers is true" do
+      before :each do
+        params['manage_sudoers'] = true
+        params['sudonopw'] = '/etc/sudoers'
+      end
+      it { is_expected.to contain_file_line_sudo_rules.with({ 'path' => '/etc/sudoers' }) }
+      it { is_expected.to contain_file_line_sudonopw_rules.with({'path' => '/etc/sudoers'}) }
+
+      describe "on Solaris" do
+        before :each do
+          facts['operatingsystem'] = 'Solaris'
+        end
+        it { is_expected.not_to contain_file_line_sudo_rules }
+        it { is_expected.not_to contain_file_line_sudonopw_rules }
+      end
+    end
 
     describe 'when setting the user to absent' do
 
@@ -164,12 +191,13 @@ describe '::accounts::user' do
     it { is_expected.to contain_user('dan').with({'shell' => '/bin/zsh'}) }
 
     describe 'override defaults' do
-      let(:params) { { 'shell' => '/bin/csh' } }
-      it { is_expected.to contain_user('dan').with({'shell' => '/bin/csh'}) }
+      let(:params) { { 'shell' => '/bin/zsh' } }
+      it { is_expected.to contain_user('dan').with({'shell' => '/bin/zsh'}) }
     end
+  end
 
     describe 'locked overrides should override defaults and user params' do
-      let(:params) { { 'shell' => '/bin/csh', 'locked' => true} }
+      let(:params) { { 'shell' => '/bin/zsh', 'locked' => true} }
       it { is_expected.to contain_user('dan').with({'shell' => '/sbin/nologin'}) }
     end
   end
