@@ -1,0 +1,73 @@
+### UberOps-Hipnotify `<%= version.to_rc %>`
+
+- [ ] Ensure `gitlab-runners` are ready to build packages by asking in `#UberOps`
+- Follow the [Change Control Request] guide by including the following in the CCR:
+  - [ ] Validate Puppetfile :ref in all environments points to proper :ref
+  - [ ] Validate Production/Development/Test Branches exist for project.
+  - [ ] Merge [Production into Master] via merge request: LINK_TO_PROD_MASTER_MR
+  - [ ] In `#UberOps` (be sure to mention people That a new version is in RC): _this will be automated soon_
+
+      ```
+      I am starting the release tasks for `UberOps-Hipnotify:<%= version.to_rc %>` (LINK_TO_THIS_ISSUE).
+      ```
+  - [ ] In `#development`: _this will be automated soon_
+
+      ```
+      I am about to tag `UberOps-Hipnotify:<%= version.to_rc %>`. I will still merge `master` into `<%= version.stable_branch %>` until the <%= ordinal_date(4) %>. After that, please follow the "Change for stable release" process:
+      https://gitlab.ubermonitoring.com/uberops/release-tools/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+      (TL;DR: Ensure the milestone and the `Pick into Stable` label are set.)
+
+      UberOps-Hipnotify:<%= version.to_patch %> comes next!
+      ```
+
+      or if the RC has already been tagged and people should follow the
+      `Pick into Stable` workflow:
+
+      ```
+      TL;DR: Ensure the `<%= version.to_patch %>` milestone and the `Pick into Stable` label are set.
+
+      `UberOps-Hipnotify:<%= version.to_rc %>` was tagged and deployed today.
+      Please start to follow the "Change for stable release" process:
+      https://gitlab.ubermonitoring.com/uberops/release-tools/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+
+      UberOps-Hipnotify:<%= version.to_patch %> comes next!
+      ```
+  - [ ] Ensure tests are green on development: https://gitlab.dev.uberops.net/puppet/uberops-hipnotify/commits/<%= version.stable_branch %>
+  - [ ] Ensure tests are green on production: https://gitlab.ubermonitoring.com/puppet/uberops-hipnotify/commits/<%= version.stable_branch %>
+  - [ ] Tag and build (this is CI-automatized) the `<%= version.to_rc %>` version using the [`release` task]:
+
+      ```sh
+      bundle exec rake "release[<%= version.to_rc %>]"
+      ```
+- [ ] Create the [regression issue] in the issue tracker using the [`regression_issue` task] and bookmark it:
+
+    ```sh
+    bundle exec rake "regression_issue[<%= version.to_patch %>]"
+    ```
+- [ ] Prepare the [blog post] using the [`new_release_post` task], in the [`release-tools` project]:
+
+    ```sh
+    bundle exec rake "new_release_post[<%= version.to_minor %>]"
+    ```
+
+- [ ] Create the first patch issue using the [`patch_issue` task]:
+
+    ```sh
+    bundle exec rake "patch_issue[<%= version.next_patch %>]"
+    ```
+
+[Release milestone]: LINK_TO_RELEASE_MILESTONE
+[regression issue]: LINK_TO_REGRESSION_ISSUE
+[blog post]: LINK_TO_WIP_BLOG_POST
+
+[Change Control Request]: https://uberops.atlassian.net/changecontrol
+[Packages are built]: https://gitlab.dev.uberops.net/puppet/uberops-hipnotify/commits/<%= version.stable_branch %>
+[`new_release_post` task]: https://gitlab.ubermonitoring.com/uberops/release-tools/#create-release-blog-post
+[`release-tools` project]: https://gitlab.ubermonitoring.com/uberops/release-tools/
+[`puppet/uberops-hipnotify`]: https://gitlab.ubermonitoring.com/puppet/uberops-hipnotify
+[Production into Master]: https://gitlab.ubermonitoring.com/uberops/release-tools/blob/master/doc/merge-ce-into-ee.md#merging-ce-master-into-ee-master
+[`Picked into Stable`]: https://gitlab.ubermonitoring.com/uberops/release-tools/blob/master/CONTRIBUTING.md#changes-for-stable-releases
+[`release` task]: https://gitlab.ubermonitoring.com/uberops/release-tools/blob/master/doc%2Frake-tasks.md#releaseversion
+[`patch_issue` task]: https://gitlab.ubermonitoring.com/uberops/release-tools/blob/master/doc%2Frake-tasks.md#patch_issueversion
+[`regression_issue` task]: https://gitlab.com/uberops/release-tools/blob/master/doc%2Frake-tasks.md#regression_issueversion
+[`Picked into Stable` <%= version.to_minor %> merged merge requests]: https://gitlab.ubermonitoring.com/dashboard/merge_requests?label_name=Pick+into+Stable&milestone_title=&scope=all&sort=id_desc&state=merged
