@@ -5,15 +5,23 @@ services:
 variables:
 
 cache:
+  key: "$CI_BUILD_NAME/$CI_BUILD_REF_NAME"
+  paths:
+    - vendor/ruby
   untracked: true
 
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
   - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - ruby -v
+  - gem install bundler  --no-ri --no-rdoc
+  - bundle install -j $(nproc) --path vendor
+  - cp .env-example .env
+  - source .env
   - bundle install
 
 after_script:
-  #- rm secrets
+  - scripts/notify_hipchat.sh -i "Finished <b>$CI_BUILD_STAGE</b>: BuildName:<b>$CI_BUILD_NAME</b>\`$CI_BUILD_REF_NAME<br>Commit \`$(git log -1 --oneline)\`<br>See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l OK -n false
 
 stages:
   - build
@@ -44,23 +52,26 @@ test:
 production:
   stage: deploy
   script:
-    - "curl -X POST -F token=$TOKEN -F ref=REF_NAME https://gitlab.ubermonitoring.com/api/v3/projects/84/trigger/builds"
+    - "curl -X POST -F token=$TOKEN -F ref=$CI_BUILD_REF_NAME https://$GITLAB_SERVER/api/v3/projects/$CONTRL_REPO/trigger/builds"
   only:
     - production
   tags:
     - docker
   environment: production
 
-# Notify hipchat in the end
-
-notify:hipchat:
+notify:hipchat_succeded:
   stage: notify
   script:
-    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` succeded! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l OK -n false
+    - ./scripts/notify_hipchat.sh -i "Build on \ `$CI_BUILD_NAME` \ `$CI_BUILD_REF_NAME\` succeded! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l OK -n false
   when: on_success
-
-notify:hipchat:
+  tags:
+    - docker
+notify:hipchat_failed:
   stage: notify
   script:
-    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l CRITICAL -n true
+    - ./scripts/notify_hipchat.sh -i "Build on \ `$CI_BUILD_NAME` \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l CRITICAL -n true
   when: on_failure
+  tags:
+    - docker
+  environment: production
+.env
