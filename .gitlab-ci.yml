@@ -21,8 +21,7 @@ before_script:
   - bundle install
 
 after_script:
-  - scripts/notify_hipchat.sh -i "Finished <b>$CI_BUILD_STAGE</b>: BuildName:<b>$CI_BUILD_NAME</b>\`$CI_BUILD_REF_NAME<br>Commit \`$(git log -1 --oneline)\`<br>See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l OK -n false
-
+  - `scripts/notify_hipchat.sh -i "Finished <b>$CI_BUILD_STAGE</b>: BuildName:<b>$CI_BUILD_NAME</b>\`$CI_BUILD_REF_NAME<br>Commit \`$(git log -1 --oneline)\`<br>See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>" -l OK -n false
 stages:
   - build
   - test
@@ -74,4 +73,3 @@ notify:hipchat_failed:
   tags:
     - docker
   environment: production
-.env
