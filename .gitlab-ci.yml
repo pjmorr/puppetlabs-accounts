@@ -57,11 +57,11 @@ test:
 rspec:audit:
   stage: test
   script:
+    - cp .env-example .env
+    - source .env
     - ruby -v
     - gem install bundler  --no-ri --no-rdoc
     - bundle install -j $(nproc) --path vendor
-    - cp .env-example .env
-    - source .env
     - bundle install
     - bundle exec rake bundle:audit
   only:
@@ -83,6 +83,8 @@ trigger:
 notify:hipchat_succeded:
   stage: notify
   script:
+    - cp .env-example .env
+    - source .env
     - ./scripts/notify_hipchat.sh -l OK -n false
   when: on_success
   tags:
@@ -90,6 +92,8 @@ notify:hipchat_succeded:
 notify:hipchat_failed:
   stage: notify
   script:
+    - cp .env-example .env
+    - source .env
     - ./scripts/notify_hipchat.sh -l CRITICAL -n true
   when: on_failure
   tags:
