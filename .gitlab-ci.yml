@@ -13,12 +13,6 @@ cache:
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
   - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-  - ruby -v
-  - gem install bundler  --no-ri --no-rdoc
-  - bundle install -j $(nproc) --path vendor
-  - cp .env-example .env
-  - source .env
-  - bundle install
 
 after_script:
   - ./scripts/notify_hipchat.sh
@@ -31,6 +25,12 @@ stages:
 build:
   stage: build
   script:
+    - ruby -v
+    - gem install bundler  --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
+    - cp .env-example .env
+    - source .env
+    - bundle install
     - bundle exec rake release_checks
   only:
     - production
@@ -41,6 +41,12 @@ build:
 test:
   stage: test
   script:
+    - ruby -v
+    - gem install bundler  --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
+    - cp .env-example .env
+    - source .env
+    - bundle install
     - bundle exec rake spec
   only:
     - production
@@ -48,7 +54,23 @@ test:
     - docker
   environment: production
 
-production:
+rspec:audit:
+  stage: test
+  script:
+    - ruby -v
+    - gem install bundler  --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
+    - cp .env-example .env
+    - source .env
+    - bundle install
+    - bundle exec rake bundle:audit
+  only:
+    - production
+  tags:
+    - docker
+  environment: production
+
+trigger:
   stage: deploy
   script:
     - "curl -X POST -F token=$TOKEN -F ref=$CI_BUILD_REF_NAME https://$GITLAB_SERVER/api/v3/projects/$CONTRL_REPO/trigger/builds"
