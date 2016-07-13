@@ -93,7 +93,7 @@ fi
 
 if [ -z "$INPUT" ]; then
   # read stdin
-  INPUT=$(cat)
+  INPUT=$HIPCHAT_INPUT_MESSAGE
 fi
 
 # replace newlines with XHTML <br>
