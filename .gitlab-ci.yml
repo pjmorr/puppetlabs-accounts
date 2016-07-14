@@ -5,6 +5,7 @@ services:
 variables:
 
 cache:
+<<<<<<< HEAD
   paths:
     - vendor/ruby
 before_script:
@@ -34,6 +35,19 @@ before_script:
 after_script:
   - ./scripts/notify_hipchat.sh
 
+=======
+  key: "$CI_BUILD_NAME/$CI_BUILD_REF_NAME"
+  paths:
+    - vendor/ruby
+  untracked: true
+
+before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
+after_script:
+  - ./scripts/notify_hipchat.sh
+>>>>>>> 8e394cfa99c66769038468145fe19cfcd230333c
 stages:
   - build
   - test
@@ -43,9 +57,18 @@ stages:
 build:release_checks:
   stage: build
   script:
+<<<<<<< HEAD
     - gem install bundler  --no-ri --no-rdoc
     - gem install puppet-retrospec
     - bundle install -j $(nproc) --path vendor
+=======
+    - ruby -v
+    - gem install bundler  --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
+    - cp .env-example .env
+    - source .env
+    - bundle install
+>>>>>>> 8e394cfa99c66769038468145fe19cfcd230333c
     - bundle exec rake release_checks
   only:
     - /^GEORGE-.*$/
@@ -54,6 +77,7 @@ build:release_checks:
     - puppet
   environment: development
 
+<<<<<<< HEAD
 test:audit:
   stage: test
   script:
@@ -89,6 +113,44 @@ test:git_ignore:
     - gem install puppet-retrospec
     - bundle install -j $(nproc) --path vendor
     - 'bundle exec rake check:git_ignore'
+=======
+test:
+  stage: test
+  script:
+    - ruby -v
+    - gem install bundler  --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
+    - cp .env-example .env
+    - source .env
+    - bundle install
+    - bundle exec rake spec
+  only:
+    - production
+  tags:
+    - docker
+  environment: production
+
+rspec:audit:
+  stage: test
+  script:
+    - cp .env-example .env
+    - source .env
+    - ruby -v
+    - gem install bundler  --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
+    - bundle install
+    - bundle exec rake bundle:audit
+  only:
+    - production
+  tags:
+    - docker
+  environment: production
+
+trigger:
+  stage: deploy
+  script:
+    - "curl -X POST -F token=$TOKEN -F ref=$CI_BUILD_REF_NAME https://$GITLAB_SERVER/api/v3/projects/$CONTRL_REPO/trigger/builds"
+>>>>>>> 8e394cfa99c66769038468145fe19cfcd230333c
   only:
     - /^GEORGE-.*$/
   tags:
@@ -110,6 +172,7 @@ test:symlinks:
     - puppet
   environment: development
 
+<<<<<<< HEAD
 deploy:puppet:
   type: deploy
   script:
@@ -136,4 +199,24 @@ notify:hipchat_fail:
   tags:
     - ruby
     - puppet
+=======
+notify:hipchat_succeded:
+  stage: notify
+  script:
+    - cp .env-example .env
+    - source .env
+    - ./scripts/notify_hipchat.sh -l OK -n false
+  when: on_success
+  tags:
+    - docker
+notify:hipchat_failed:
+  stage: notify
+  script:
+    - cp .env-example .env
+    - source .env
+    - ./scripts/notify_hipchat.sh -l CRITICAL -n true
+  when: on_failure
+  tags:
+    - docker
+>>>>>>> 8e394cfa99c66769038468145fe19cfcd230333c
   environment: production

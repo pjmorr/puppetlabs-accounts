@@ -24,13 +24,19 @@ define accounts::user(
   $managehome           = true,
   $bashrc_content       = undef,
   $bash_profile_content = undef,
+  $sudoers_path         = '/etc/sudoers',
+  $sudonopw_rules       = '/etc/sudoers',
+  $manage_sudoers       = false,
+  $sudonopw             = false,
 ) {
   validate_re($ensure, '^present$|^absent$')
-  validate_bool($locked, $managehome, $purge_sshkeys)
+  validate_bool($locked, $managehome, $purge_sshkeys, $manage_sudoers)
   validate_re($shell, '^/')
   validate_string($comment, $password)
   validate_array($groups, $sshkeys)
   validate_re($membership, '^inclusive$|^minimum$')
+  validate_re($sudoers_path, '^/[^/]+')
+  validate_re($sudoers_path, '[^/]$')
   if $bashrc_content {
     validate_string($bashrc_content)
   }
@@ -68,6 +74,25 @@ define accounts::user(
     $_gid = $name
   }
 
+  if $::operatingsystem != 'windows' {
+    if $manage_sudoers == true {
+      case $::operatingsystem {
+        'solaris': {
+          warning("manage_sudoers is ${manage_sudoers} but is not supported on ${::operatingsystem}")
+        }
+        default: {
+          file_line { 'sudo_rules':
+            path => $sudoers_path,
+            line => '%sudo ALL=(ALL) ALL',
+          }
+          file_line { 'sudonopw_rules':
+            path => $sudoers_path,
+            line => '%sudonopw ALL=NOPASSWD: ALL',
+          }
+        }
+      }
+    }
+  }
   if $locked {
     case $::operatingsystem {
       'debian', 'ubuntu' : {
@@ -98,7 +123,6 @@ define accounts::user(
     purge_ssh_keys => $purge_sshkeys,
   }
 
-  # use $gid instead of $_gid since `gid` in group can only take a number
   group { $name:
     ensure => $ensure,
     gid    => $gid,

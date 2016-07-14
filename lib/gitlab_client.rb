@@ -13,7 +13,7 @@ class GitlabClient
   end
 
   # Hard-code the CE project ID to save a request
-  CE_PROJECT_ID = 252
+  CE_PROJECT_ID = 13_083
 
   def self.current_user
     @current_user ||= Gitlab.user
@@ -68,6 +68,6 @@ class GitlabClient
   end
 
   def self.issue_url(issue)
-    "https://gitlab.ubermonitoring.com/puppet/puppet-accounts/issues/#{issue.iid}"
+    "https://gitlab.com/gitlab-org/gitlab-ce/issues/#{issue.iid}"
   end
 end

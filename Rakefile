@@ -5,12 +5,12 @@ require 'bundler'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'metadata-json-lint/rake_task'
-require 'bundler/audit/task'
-require 'colorize'
 require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'rdoc/task'
 require 'rake'
+require 'bundler/audit/task'
+require 'colorize'
 
 require_relative 'lib/version'
 require_relative 'lib/monthly_issue'
@@ -48,6 +48,9 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+PuppetLint.configuration.send('disable_documentation')
+PuppetLint.configuration.send('disable_single_quote_string_with_variables')
+PuppetLint.configuration.ignore_paths = ["vendor/**/*.pp", "spec/**/*.pp", "pkg/**/*.pp"]
 
 Bundler::Audit::Task.new
 
@@ -77,11 +80,12 @@ task :test do
     Rake::Task[test].invoke
   end
 end
+
 def get_version(args)
   version = Version.new(args[:version])
 
   unless version.valid?
-    puts 'Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z'.colorize(:red)
+    puts "Version number must be in the following format: X.Y.Z-rc1 or X.Y.Z".colorize(:red)
     exit 1
   end
 
@@ -92,22 +96,22 @@ def skip?(repo)
   ENV[repo.upcase] == 'false'
 end
 
-desc 'Create release'
-task :release, [:version] do |_t, args|
+desc "Create release"
+task :release, [:version] do |t, args|
   version = get_version(args)
 
   if skip?('ce')
-    puts 'Skipping release for HipNotify'.colorize(:red)
+    puts 'Skipping release for project'.colorize(:red)
   else
-    puts 'CE release'.colorize(:blue)
+    puts 'Project release'.colorize(:blue)
     Release::GitlabCeRelease.new(version).execute
   end
 end
 
-desc 'Sync master branch in remotes'
+desc "Sync master branch in remotes"
 task :sync do
   if skip?('ce')
-    puts 'Skipping sync for HipNotify'.colorize(:yellow)
+    puts 'Skipping sync for project'.colorize(:yellow)
   else
     Sync.new(Remotes.remotes).execute
   end
@@ -125,25 +129,24 @@ def create_or_show_issue(issue)
   end
 end
 
-desc 'Create the monthly release issue'
-task :monthly_issue, [:version] do |_t, args|
+desc "Create the monthly release issue"
+task :monthly_issue, [:version] do |t, args|
   version = get_version(args)
   issue = MonthlyIssue.new(version)
 
   create_or_show_issue(issue)
 end
 
-desc 'Create the regression tracking issue'
-task :regression_issue, [:version] do |_t, args|
+desc "Create the regression tracking issue"
+task :regression_issue, [:version] do |t, args|
   version = get_version(args)
   issue = RegressionIssue.new(version)
 
   create_or_show_issue(issue)
 end
 
-
-desc 'Create a patch issue'
-task :patch_issue, [:version] do |_t, args|
+desc "Create a patch issue"
+task :patch_issue, [:version] do |t, args|
   version = get_version(args)
   issue = PatchIssue.new(version)
 
