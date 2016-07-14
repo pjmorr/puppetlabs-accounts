@@ -10,14 +10,14 @@ def location_for(place, fake_version = nil)
   end
 end
 
-group :development, :unit_tests do
-  gem 'rspec-puppet',            :require => false
-  gem 'rspec-core',              :require => false
-  gem 'puppetlabs_spec_helper',  :require => false
-  gem 'simplecov',               :require => false
-  gem 'puppet_facts',            :require => false
-  gem 'json',                    :require => false
-end
+
+gem 'rspec-puppet',            :require => false
+gem 'rspec-core',              :require => false
+gem 'puppetlabs_spec_helper',  :require => false
+gem 'simplecov',               :require => false
+gem 'puppet_facts',            :require => false
+gem 'json',                    :require => false
+
 
 group :system_tests do
   if beaker_version = ENV['BEAKER_VERSION']
@@ -32,8 +32,6 @@ group :system_tests do
   gem 'beaker-puppet_install_helper', '>= 0.4.2', :require => false
 end
 
-
-
 if facterversion = ENV['FACTER_GEM_VERSION']
   gem 'facter', facterversion, :require => false
 else
@@ -45,5 +43,13 @@ if puppetversion = ENV['PUPPET_GEM_VERSION']
 else
   gem 'puppet', :require => false
 end
-
+gem 'codeclimate-test-reporter', require: false
+gem 'metadata-json-lint'
+gem 'bundler-audit'
+gem 'activesupport', '~> 4.2.0'
+gem 'colorize'
+gem 'dotenv', '~> 2.0.0'
+gem 'gitlab', '~> 3.6.0'
+gem 'weekdays', '~> 1.0.0'
+gem 'rubocop'
 # vim:ft=ruby

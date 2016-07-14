@@ -5,32 +5,34 @@ services:
 variables:
 
 cache:
-  untracked: true
-
+  paths:
+    - vendor/ruby
 before_script:
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
-  - apt-get -qq update
-  - 'which ssh-agent || ( apt-get -qq install openssh-client -y )'
+  #- apt-get -qq update
+  #- apt-get -qq upgrade
+  #- 'which ssh-agent || ( apt-get -qq install openssh-client -y )'
 
   # Run ssh-agent (inside the build environment)
-  - eval $(ssh-agent -s)
+  #- eval $(ssh-agent -s)
 
   # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  #- ssh-add <(echo "$SSH_PRIVATE_KEY")
 
   # For Docker builds disable host key checking. Be aware that by adding that
   # you are suspectible to man-in-the-middle attacks.
   # WARNING: Use this only with the Docker executor, if you use it with shell
   # you will overwrite your user's SSH config.
-  - mkdir -p ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  #- mkdir -p ~/.ssh
+  #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - cp .env-example .env
   - export DEBIAN_FRONTEND=noninteractive
   - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-  - bundle install
+  - ruby -v
 
 after_script:
-  - rm secrets
+  - ./scripts/notify_hipchat.sh
 
 stages:
   - build
@@ -38,56 +40,100 @@ stages:
   - deploy
   - notify
 
-build:
+build:release_checks:
   stage: build
   script:
+    - gem install bundler  --no-ri --no-rdoc
+    - gem install puppet-retrospec
+    - bundle install -j $(nproc) --path vendor
     - bundle exec rake release_checks
   only:
-    - production
+    - /^GEORGE-.*$/
   tags:
-    - docker
-  environment: production
-
-build:
-  stage: build
-  script:
-    - bundle exec rake release_checks
-  only:
-    - development
-  tags:
-    - docker
+    - ruby
+    - puppet
   environment: development
 
-build:
-  stage: build
+test:audit:
+  stage: test
   script:
-    - bundle exec rake release_checks
+    - gem install bundler  --no-ri --no-rdoc
+    - gem install puppet-retrospec
+    - bundle install -j $(nproc) --path vendor
+    - 'bundle exec rake bundle:audit'
   only:
-    - test
+    - /^GEORGE-.*$/
   tags:
-    - docker
-  environment: test
+    - ruby
+    - puppet
+  environment: development
 
-production:
-  stage: deploy
+test:dot_underscore:
+  stage: test
   script:
-    - "curl -X POST -F token=$TOKEN -F ref=REF_NAME https://gitlab.ubermonitoring.com/api/v3/projects/84/trigger/builds"
+    - gem install bundler  --no-ri --no-rdoc
+    - gem install puppet-retrospec
+    - bundle install -j $(nproc) --path vendor
+    - 'bundle exec rake check:dot_underscore'
   only:
-    - production
+    - /^GEORGE-.*$/
   tags:
-    - docker
+    - ruby
+    - puppet
+  environment: development
+
+test:git_ignore:
+  stage: test
+  script:
+    - gem install bundler  --no-ri --no-rdoc
+    - gem install puppet-retrospec
+    - bundle install -j $(nproc) --path vendor
+    - 'bundle exec rake check:git_ignore'
+  only:
+    - /^GEORGE-.*$/
+  tags:
+    - ruby
+    - puppet
+  environment: development
+
+test:symlinks:
+  stage: test
+  script:
+    - gem install bundler  --no-ri --no-rdoc
+    - gem install puppet-retrospec
+    - bundle install -j $(nproc) --path vendor
+    - 'bundle exec rake check:symlinks'
+  only:
+    - /^GEORGE-.*$/
+  tags:
+    - ruby
+    - puppet
+  environment: development
+
+deploy:puppet:
+  type: deploy
+  script:
+    - "curl -X POST -F token=$TOKEN -F ref=REF_NAME https://$GITLAB_SERVER/api/v3/projects/$CONTRL_REPO/trigger/builds"
+  environment: production
+  only:
+    - master@puppet/puppetlabs-accounts
+
+notify:hipchat_success:
+  stage: notify
+  script:
+    - ./scripts/notify_hipchat.sh -l OK
+  when: on_success
+  tags:
+    - ruby
+    - puppet
   environment: production
 
-# Notify hipchat in the end
-
-notify:hipchat:
+notify:hipchat_fail:
   stage: notify
   script:
-    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` succeded! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
-  when: on_success
-
-notify:hipchat:
-  stage: notify
-  script:
-    - ./scripts/notify_hipchat.sh -i "Build on \`$CI_BUILD_REF_NAME\` failed! Commit \`$(git log -1 --oneline)\` See <https://gitlab.ubermonitoring.com/puppet/$(basename "$PWD")/commit/"$CI_BUILD_REF"/builds>"
+    - ./scripts/notify_hipchat.sh -l OK -n on
   when: on_failure
+  tags:
+    - ruby
+    - puppet
+  environment: production

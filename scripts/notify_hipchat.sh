@@ -40,7 +40,7 @@ EOF
 }
 
 # Include hipchat defaults if available
-
+source .env
 TOKEN=${HIPCHAT_TOKEN:-}
 ROOM_ID=${HIPCHAT_ROOM_ID:-}
 FROM=${HIPCHAT_FROM:-}
@@ -93,7 +93,7 @@ fi
 
 if [ -z "$INPUT" ]; then
   # read stdin
-  INPUT=$(cat)
+  INPUT=$HIPCHAT_INPUT_MESSAGE
 fi
 
 # replace newlines with XHTML <br>
